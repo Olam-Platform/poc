@@ -1,2 +1,2 @@
 # poc
-shipment smart contract used for storing live sensors measurements
+shipment smart contract for recording shipment related events on blockchain
