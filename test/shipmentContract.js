@@ -70,7 +70,7 @@ contract('Shipment Contract', function([owner]){
             assert.equal(receivedtime, arr[1]);
             assert.equal(sensorId, arr[2]);
             assert.equal(alert, arr[3]);
-        })
+        });
 
         it('adding 2 measurements and requesting last measurement, should be equal to second measurement', async function() {
             var createdTime = [Date.now(), Date.now() + 1000];

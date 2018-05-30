@@ -1,31 +1,37 @@
 pragma solidity 0.4.19;
 
+
+/**
+ * @title ShipmentContract
+ * @dev Contract which stores a current sensor measurement from a live shipment
+ */
 contract ShipmentContract {
+
     //state enum
-    enum ShipmentState { NotCreated, InProcess, Stopped, Dead }
+    enum ShipmentState {NotCreated, InProcess, Stopped, Dead}
 
     //structs definition
     struct Measurment {
-        uint[]  timeStamps;
-        string 	gatewayId;
-        uint 	sensorId;
-        int 	temperature;
-        uint	relativeHumidity;
+        uint[] timeStamps;
+        string gatewayId;
+        uint sensorId;
+        int temperature;
+        uint relativeHumidity;
     }
 
     struct Location {
-        uint    createdTime;
-        uint  	receivedTime;
-        string 	gatewayId;
-        string  longitude;
-        string  latitude;
+        uint createdTime;
+        uint receivedTime;
+        string gatewayId;
+        string longitude;
+        string latitude;
     }
 
     struct Alert {
-        uint    createdTime;
-        uint    receivedTime;
-        uint    sensorId;
-        string  alertText;
+        uint createdTime;
+        uint receivedTime;
+        uint sensorId;
+        string alertText;
     }
 
     //contract variables
@@ -37,6 +43,8 @@ contract ShipmentContract {
     Alert           public lastAlert;
 
     //events
+
+
     event MeasurementUpdate(uint createdTime, uint receivedTime, string gatewayId, uint sensorId, int temperature, uint relativeHumidity);
     event LocationUpdate(uint createdTime, uint receivedTime, string gatewayId, string longitude, string latitude);
     event StateChange(uint createdTime, ShipmentState state);
@@ -79,7 +87,7 @@ contract ShipmentContract {
         LocationUpdate(createdTime, receivedTime, gatewayId, longitude, latitude);
     }
 
-    function addAlert (uint createdTime, uint receivedTime, uint sensorId, string alertText) public {
+    function addAlert(uint createdTime, uint receivedTime, uint sensorId, string alertText) public {
         lastAlert.createdTime = createdTime;
         lastAlert.receivedTime = receivedTime;
         lastAlert.sensorId = sensorId;
@@ -117,14 +125,14 @@ contract ShipmentContract {
     }
 
     function getLastAlert() public view onlyOwner returns (uint, uint, uint, string) {
-        return(lastAlert.createdTime, lastAlert.receivedTime, lastAlert.sensorId, lastAlert.alertText);
+        return (lastAlert.createdTime, lastAlert.receivedTime, lastAlert.sensorId, lastAlert.alertText);
     }
 
     function addMeasurements(uint[] createdTime, uint[] receivedTime, string gatewayId, uint[] sensorIds, int[] temperature, uint[] relativeHumidity) public onlyOwner {
         uint length = createdTime.length;
         uint i;
 
-        for(i = 0; i < length ; i++) {
+        for (i = 0; i < length; i++) {
             addMeasurement(createdTime[i], receivedTime[i], gatewayId, sensorIds[i], temperature[i], relativeHumidity[i]);
         }
     }
